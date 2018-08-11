@@ -51,3 +51,9 @@ class CommonODBC(object):
 
 	def doClose(self):
 		self.cnxn.close()
+
+#we will use the below class to access values column wise
+class columns(object):
+    def __init__(self, cursor, row):
+        for (attr, val) in zip((d[0] for d in cursor.description), row) :
+            setattr(self, attr, val)
