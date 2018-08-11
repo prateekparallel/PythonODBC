@@ -92,7 +92,8 @@ def main(argv):
 				print("Designation :", DESIGNATION)
 				print("Salary      :", SALARY)
 		sybase_cursor.close()
-	
+	except:
+		print("Exception while connecting to Sybase Server")
 
 if __name__ == "__main__":
     main(sys.argv)	
