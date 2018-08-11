@@ -63,7 +63,36 @@ def main(argv):
 		mssql_cursor.close()
 	except:
 		print("Exception while connecting to MS SQL Server")
+		#the below example is for Sybase database
+		# First create connection object
+		CommonDBConnectionObject(database_environment,userid,password,host,port,"sybase")
+
+		#now get the cursor first
+		sybase_cursor = oracleODBC.getCursor()
+
+		#now first execute a insert statement
+		sql =("insert into Employee(EMP_ID, DESIGNATION, SALARY) values('%s','%s',%s)" % ('12345', 'MGR', 1200))
+		sybase_cursor.execute(sql)
+		sybase_cursor.doCommit()
+		sybase_cursor.close()
+		#Now we will execute a select statement
+		sybase_cursor = oracleODBC.getCursor()
+		sql="select EMP_ID, DESIGNATION, SALARY from EMPLOYEE"
+		sybase_cursor = oracleODBC.getCursor()
+		sybase_cursor.loadCursor(sql)
+		dataset = sybase_cursor.fetchall()
 		
+		if len(dataset) > 0:
+			for row in dataset :
+				records = columns(oracle_cursor, row)
+				EMP_ID = records.EMP_ID
+				DESIGNATION = records.DESIGNATION
+				SALARY =  records.SALARY
+				print("Employee ID :", EMP_ID)
+				print("Designation :", DESIGNATION)
+				print("Salary      :", SALARY)
+		sybase_cursor.close()
+	
 
 if __name__ == "__main__":
     main(sys.argv)	
