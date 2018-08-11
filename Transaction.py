@@ -35,7 +35,35 @@ def main(argv):
 				print("Salary      :", SALARY)
 		oracle_cursor.close()
 	except:
-		print("Connection issue")
+		print("Exception while connecting to oracle")
+		#now below example is for Microsoft sql server
+		ms_sqldb = CommonDBConnectionObject(database_environment,userID,password,host_name)
+		#To login with windows authentication
+		#ms_sqldb = CommonDBConnectionObject(database_environment,"","",host_name,True)
+		#now first execute a insert statement
+		sql =("insert into Employee(EMP_ID, DESIGNATION, SALARY) values('%s','%s',%s)" % ('12345', 'MGR', 1200))
+		mssql_cursor = ms_sqldb.getCursor()
+		mssql_cursor.execute(sql)
+		mssql_cursor.doCommit()
+		mssql_cursor.close()
+		sql="select EMP_ID, DESIGNATION, SALARY from EMPLOYEE"
+		mssql_cursor = ms_sqldb.getCursor()
+		mssql_cursor.loadCursor(sql)
+		dataset = mssql_cursor.fetchall()
+		
+		if len(dataset) > 0:
+			for row in dataset :
+				records = columns(oracle_cursor, row)
+				EMP_ID = records.EMP_ID
+				DESIGNATION = records.DESIGNATION
+				SALARY =  records.SALARY
+				print("Employee ID :", EMP_ID)
+				print("Designation :", DESIGNATION)
+				print("Salary      :", SALARY)
+		mssql_cursor.close()
+	except:
+		print("Exception while connecting to MS SQL Server")
+		
 
 if __name__ == "__main__":
     main(sys.argv)	
