@@ -32,3 +32,22 @@ class CommonODBC(object):
 			self.cnxn = cx_Oracle.connect(connectionString)
 		else:
 			self.cnxn = pyodbc.connect(connectionString)
+
+	# We will call this method to load and get the reference of the cursor for database transaction
+	def loadCursor(self,sqlstmt):
+		cur = self.cnxn.cursor()
+		cur.arraysize = 5000
+		cur.execute(sqlstmt)
+		return cur
+
+    # This is an alternate method apart from above method for loading the cursor
+	def getCursor(self):
+		cur = self.cnxn.cursor()
+		cur.arraysize = 5000
+		return cur
+
+	def doCommit(self):
+		self.cnxn.commit()
+
+	def doClose(self):
+		self.cnxn.close()
